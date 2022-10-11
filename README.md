@@ -25,24 +25,24 @@ cd bcut-asr
 ### CLI Interface
 
 ```bash
-bcut-asr video.mp4
+bcut_asr video.mp4
 ```
 
 或
 
 ```bash
-bcut-asr video.mp4 subttle.srt
+bcut_asr video.mp4 subttle.srt
 ```
 
 或
 
 ```bash
-bcut-asr video.mp4 -f srt - > subttle.srt
+bcut_asr video.mp4 -f srt - > subttle.srt
 ```
 
 ```
-bcut-asr -h                
-usage: bcut-asr [-h] [-f [{srt,json,lrc,txt}]] input [output]
+bcut_asr -h                
+usage: bcut_asr [-h] [-f [{srt,json,lrc,txt}]] input [output]
 
 必剪语音识别
 

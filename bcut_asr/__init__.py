@@ -7,7 +7,7 @@ import requests
 from .orm import (ResourceCompleteRspSchema, ResourceCreateRspSchema,
                   ResultRspSchema, ResultStateEnum, TaskCreateRspSchema)
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 API_REQ_UPLOAD    = 'https://member.bilibili.com/x/bcut/rubick-interface/resource/create' # 申请上传
 API_COMMIT_UPLOAD = 'https://member.bilibili.com/x/bcut/rubick-interface/resource/create/complete' # 提交上传
