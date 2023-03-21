@@ -82,3 +82,16 @@ if subtitle.has_data():
     # 输出srt格式
     print(subtitle.to_srt())
 ```
+
+输入视频
+
+```python
+from bcut_asr import run_everywhere
+from argparse import Namespace
+
+
+f = open("file.mp4", "rb")
+argg = Namespace(format="srt", input=f, output=None)
+run_everywhere(argg)
+
+```
