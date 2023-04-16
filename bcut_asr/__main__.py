@@ -5,7 +5,7 @@ from argparse import ArgumentParser, FileType
 import ffmpeg
 from . import APIError, BcutASR, ResultStateEnum
 
-logging.basicConfig(format = '%(asctime)s - [%(levelname)s] %(message)s', level = logging.INFO)
+logging.basicConfig(format='%(asctime)s - [%(levelname)s] %(message)s', level=logging.INFO)
 
 INFILE_FMT = ('flac', 'aac', 'm4a', 'mp3', 'wav')
 OUTFILE_FMT = ('srt', 'json', 'lrc', 'txt')
@@ -21,14 +21,16 @@ parser.add_argument('output', nargs='?', type=FileType('w', encoding='utf8'), he
 
 args = parser.parse_args()
 
+
 def ffmpeg_render(media_file: str) -> bytes:
     '提取视频伴音并转码为aac格式'
     out, err = (ffmpeg
-        .input(media_file, v='warning')
-        .output('pipe:', ac=1, format='adts')
-        .run(capture_stdout=True)
-    )
+                .input(media_file, v='warning')
+                .output('pipe:', ac=1, format='adts')
+                .run(capture_stdout=True)
+                )
     return out
+
 
 def main():
     # 处理输入文件情况
@@ -61,8 +63,6 @@ def main():
             outfile_fmt = args.format
         else:
             outfile_fmt = 'srt'
-        outfile_name = f"{infile_name.rsplit('.', 1)[-2]}.{outfile_fmt}"
-        outfile = open(outfile_name, 'w', encoding='utf8')
     else:
         # 指定输出文件
         outfile_name = outfile.name
@@ -79,7 +79,7 @@ def main():
             else:
                 logging.error('输出格式错误')
                 sys.exit(-1)
-    
+
     # 开始执行转换逻辑
     asr = BcutASR()
     asr.set_data(raw_data=infile_data, data_fmt=infile_fmt)
@@ -101,6 +101,8 @@ def main():
                     sys.exit(-1)
                 case ResultStateEnum.COMPLETE:
                     logging.info(f'识别成功')
+                    outfile_name = f"{infile_name.rsplit('.', 1)[-2]}.{outfile_fmt}"
+                    outfile = open(outfile_name, 'w', encoding='utf8')
                     # 识别成功, 回读字幕数据
                     result = task_resp.parse()
                     break
@@ -121,6 +123,7 @@ def main():
     except APIError as err:
         logging.error(f'接口错误: {err.__str__()}')
         sys.exit(-1)
+
 
 if __name__ == '__main__':
     main()
