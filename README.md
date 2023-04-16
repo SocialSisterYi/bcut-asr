@@ -17,6 +17,10 @@ git clone https://github.com/SocialSisterYi/bcut-asr
 cd bcut-asr
 ./setup.py install
 ```
+windows cmd 最后一行改为下面
+```bash
+python setup.py install
+```
 
 媒体转码需要安装 ffmpeg, 且系统 PATH 中可访问
 
