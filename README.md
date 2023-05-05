@@ -15,10 +15,13 @@
 ```bash
 git clone https://github.com/SocialSisterYi/bcut-asr
 cd bcut-asr
+```
+Linux
+```bash
 ./setup.py install
 ```
-windows cmd 最后一行改为下面
-```bash
+Windows
+```cmd
 python setup.py install
 ```
 
