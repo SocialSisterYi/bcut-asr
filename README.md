@@ -15,7 +15,7 @@
 ```bash
 git clone https://github.com/SocialSisterYi/bcut-asr
 cd bcut-asr
-./setup.py install
+python ./setup.py install  # Python 3.10+, test pass: Python 3.11.7
 ```
 
 媒体转码需要安装 ffmpeg, 且系统 PATH 中可访问
@@ -31,13 +31,13 @@ bcut_asr video.mp4
 或
 
 ```bash
-bcut_asr video.mp4 subttle.srt
+bcut_asr video.mp4 subtitle.srt
 ```
 
 或
 
 ```bash
-bcut_asr video.mp4 -f srt - > subttle.srt
+bcut_asr video.mp4 -f srt - > subtitle.srt
 ```
 
 ```
