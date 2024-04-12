@@ -16,6 +16,7 @@ parser = ArgumentParser(
     epilog=f"支持输入音频格式: {', '.join(INFILE_FMT)}  支持自动调用ffmpeg提取视频伴音"
 )
 parser.add_argument('-f', '--format', nargs='?', default='srt', choices=OUTFILE_FMT, help='输出字幕格式')
+parser.add_argument('-i', '--interval', nargs='?', type=float, default='1.0', metavar='1.0', help='任务状态轮询间隔(秒)')
 parser.add_argument('input', type=FileType('rb'), help='输入媒体文件')
 parser.add_argument('output', nargs='?', type=FileType('w', encoding='utf8'), help='输出字幕文件, 可stdout')
 
@@ -80,6 +81,9 @@ def main():
                 logging.error('输出格式错误')
                 sys.exit(-1)
 
+    interval = args.interval
+    if interval is None:
+        interval = 1.0
     # 开始执行转换逻辑
     asr = BcutASR()
     asr.set_data(raw_data=infile_data, data_fmt=infile_fmt)
@@ -106,7 +110,7 @@ def main():
                     # 识别成功, 回读字幕数据
                     result = task_resp.parse()
                     break
-            time.sleep(1.0)
+            time.sleep(interval)
         if not result.has_data():
             logging.error('未识别到语音')
             sys.exit(-1)
@@ -119,6 +123,7 @@ def main():
                 outfile.write(result.json())
             case 'txt':
                 outfile.write(result.to_txt())
+        outfile.close()
         logging.info(f'转换成功: {outfile_name}')
     except APIError as err:
         logging.error(f'接口错误: {err.__str__()}')
