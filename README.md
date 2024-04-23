@@ -2,25 +2,40 @@
 
 使用必剪 API 进行云端语音字幕识别，支持 CLI 和 module 调用
 
-## Feature
+## ✨Feature
 
 - 可直接上传`flac`, `aac`, `m4a`, `mp3`, `wav`音频格式
-- 自动调用ffmpeg, 实现视频伴音和其他音频格式转码
+- 自动调用 ffmpeg, 实现视频伴音和其他音频格式转码
 - 支持`srt`, `json`, `lrc`, `txt`格式字幕输出
 - 字幕支持断句和首位时间标记
 - 可使用 stdout 输出字幕文本
 
-## Install
+## 🚀Install
+
+首先确保 ffmpeg 已安装，且 PATH 中可以访问，若未安装可以使用如下命令（已安装请无视）：
+
+Linux：
+
+```bash
+sudo apt install ffmpeg
+```
+
+Windows：
+
+```powershell
+winget install ffmpeg
+```
+
+本项目暂时未发布 pypi，应使用本地安装，Python 版本应 >= 3.10，需要安装 poetry 
 
 ```bash
 git clone https://github.com/SocialSisterYi/bcut-asr
 cd bcut-asr
-python ./setup.py install  # Python 3.10+, test pass: Python 3.11.7
+poetry build -f wheel
+pip install dist/bcut_asr-0.0.3-py3-none-any.whl # Example
 ```
 
-媒体转码需要安装 ffmpeg, 且系统 PATH 中可访问
-
-## Usage
+## 📃Usage
 
 ### CLI Interface
 
