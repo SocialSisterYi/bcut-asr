@@ -81,6 +81,9 @@ def run_everywhere(argg):
                 logging.error('输出格式错误')
                 sys.exit(-1)
 
+    interval = argg.interval
+    if interval is None:
+        interval = 30.0
     # 开始执行转换逻辑
     asr = BcutASR()
     asr.set_data(raw_data=infile_data, data_fmt=infile_fmt)
@@ -107,7 +110,7 @@ def run_everywhere(argg):
                     # 识别成功, 回读字幕数据
                     result = task_resp.parse()
                     break
-            time.sleep(300.0)
+            time.sleep(interval)
         if not result.has_data():
             logging.error('未识别到语音')
             sys.exit(-1)
@@ -120,6 +123,7 @@ def run_everywhere(argg):
                 outfile.write(result.json())
             case 'txt':
                 outfile.write(result.to_txt())
+        outfile.close()
         logging.info(f'转换成功: {outfile_name}')
     except APIError as err:
         logging.error(f'接口错误: {err.__str__()}')
@@ -149,16 +153,16 @@ class BcutASR:
     __etags: list[str]
     __download_url: str
     task_id: str
-    
+
     def __init__(self, file: Optional[str | PathLike] = None) -> None:
         self.session = requests.Session()
         self.task_id = None
         self.__etags = []
         if file:
             self.set_data(file)
-    
+
     def set_data(self,
-        file: Optional[str | PathLike] = None, 
+        file: Optional[str | PathLike] = None,
         raw_data: Optional[bytes] = None,
         data_fmt: Optional[SUPPORT_SOUND_FORMAT] = None
     ) -> None:
@@ -182,7 +186,7 @@ class BcutASR:
             raise TypeError('format is not support')
         self.sound_fmt = suffix
         logging.info(f'加载文件成功: {self.sound_name}')
-    
+
     def upload(self) -> None:
         '申请上传'
         if not self.sound_bin or not self.sound_fmt:
@@ -209,7 +213,7 @@ class BcutASR:
         logging.info(f'申请上传成功, 总计大小{resp_data.size // 1024}KB, {self.__clips}分片, 分片大小{resp_data.per_size // 1024}KB: {self.__in_boss_key}')
         self.__upload_part()
         self.__commit_upload()
-        
+
     def __upload_part(self) -> None:
         '上传音频数据'
         for clip in range(self.__clips):
@@ -223,7 +227,7 @@ class BcutASR:
             etag = resp.headers.get('Etag')
             self.__etags.append(etag)
             logging.info(f'分片{clip}上传成功: {etag}')
-    
+
     def __commit_upload(self) -> None:
         '提交上传数据'
         resp = self.session.post(API_COMMIT_UPLOAD, data={
@@ -241,7 +245,7 @@ class BcutASR:
         resp_data = ResourceCompleteRspSchema.parse_obj(resp['data'])
         self.__download_url = resp_data.download_url
         logging.info(f'提交成功')
-    
+
     def create_task(self) -> str:
         '开始创建转换任务'
         resp = self.session.post(API_CREATE_TASK, json={
@@ -257,7 +261,7 @@ class BcutASR:
         self.task_id = resp_data.task_id
         logging.info(f'任务已创建: {self.task_id}')
         return self.task_id
-    
+
     def result(self, task_id: Optional[str] = None) -> ResultRspSchema:
         '查询转换结果'
         resp = self.session.get(API_QUERY_RESULT, params={

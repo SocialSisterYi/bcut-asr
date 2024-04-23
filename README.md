@@ -40,9 +40,15 @@ bcut_asr video.mp4 subtitle.srt
 bcut_asr video.mp4 -f srt - > subtitle.srt
 ```
 
+长音频指定任务状态轮询间隔(秒)，避免接口频繁调用
+
+```bash
+bcut_asr video.mp4 -f srt -i 30 - > subtitle.srt
 ```
-bcut_asr -h                
-usage: bcut_asr [-h] [-f [{srt,json,lrc,txt}]] input [output]
+
+```
+bcut_asr -h
+usage: bcut-asr [-h] [-f [{srt,json,lrc,txt}]] [-i [1.0]] input [output]
 
 必剪语音识别
 
@@ -54,6 +60,8 @@ options:
   -h, --help            show this help message and exit
   -f [{srt,json,lrc,txt}], --format [{srt,json,lrc,txt}]
                         输出字幕格式
+  -i [1.0], --interval [1.0]
+                        任务状态轮询间隔(秒)
 
 支持输入音频格式: flac, aac, m4a, mp3, wav 支持自动调用ffmpeg提取视频伴音
 ```
@@ -91,7 +99,7 @@ from argparse import Namespace
 
 
 f = open("file.mp4", "rb")
-argg = Namespace(format="srt", input=f, output=None)
+argg = Namespace(format="srt", interval=30.0, input=f, output=None)
 run_everywhere(argg)
 
 ```
