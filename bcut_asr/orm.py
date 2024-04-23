@@ -8,13 +8,11 @@ class ASRDataSeg(BaseModel):
         label: str
         start_time: int
         end_time: int
-        confidence: int
     start_time: int
     end_time: int
     transcript: str
     words: list[ASRDataWords]
-    confidence: int
-    
+
     def to_srt_ts(self) -> str:
         '转换为srt时间戳'
         def _conv(ms: int) -> tuple[int ,int, int, int]:
