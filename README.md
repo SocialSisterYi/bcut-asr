@@ -31,6 +31,7 @@ winget install ffmpeg
 ```bash
 git clone https://github.com/SocialSisterYi/bcut-asr
 cd bcut-asr
+poetry lock
 poetry build -f wheel
 pip install dist/bcut_asr-0.0.3-py3-none-any.whl # Example
 ```
