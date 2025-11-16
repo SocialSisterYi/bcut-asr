@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "bcut-asr"
-version = "0.0.3"
-description = "使用必剪API的语音字幕识别"
+name = "bcut-tools"
+version = "0.0.4"
+description = "使用必剪 API 的语音字幕识别"
 authors = ["SocialSisterYi <1440239038@qq.com>"]
 license = "MIT License"
 readme = "README.md"
@@ -11,9 +11,10 @@ python = ">=3.10"
 requests = "^2.31.0"
 pydantic = "^2.7.0"
 ffmpeg-python = "^0.2.0"
+rich = "^13.0.0"
 
 [tool.poetry.scripts]
-bcut-asr = "bcut_asr.__main__:main"
+bcut-tools = "bcut_tools.__main__:main"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.0"
